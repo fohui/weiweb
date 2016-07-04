@@ -1,0 +1,51 @@
+body{
+	font:14px/1.2 "微软雅黑";
+	color:#333;
+}
+.u-toptips p{
+	width:960px;
+	margin:0 auto;
+}
+.g-body,.m-nav,.m-products{
+	width:960px;
+	margin:0 auto;
+}
+.g-header,.g-footer,.g-box,u-banner,.u-toptip{
+	width:100%;
+}
+.g-main{
+	width:720px;
+}
+.g-side{
+	width:240px;
+}
+.g-footer .footer-cont{
+	width:960px;
+}
+.g-body{
+	margin-top:80px;
+}
+.g-footer{
+	margin-top:120px;
+	height:260px;
+}
+.m-products{
+	margin-top:60px;
+}
+.g-box{
+	margin-top:60px;
+}
+@media screen and (min-width: 1400px){
+	.u-toptips p{
+		width:1200px;
+	}
+	.g-body,.m-nav,.m-products{
+		width:1200px;
+	}
+	.g-main{
+		width:960px;
+	}
+	.g-footer .footer-cont{
+		width:1200px;
+	}
+}

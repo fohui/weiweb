@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>pagingDemo</title>
+	<style>
+		
+	</style>
+</head>
+<body>
+	<div id="item">
+		<div>一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十</div>
+	</div>
+
+	<script>
+		//返回一个组装好的分页器HTML字符串
+		function makePaging(totalPages, pageIndex) {
+		    var oPaging, i, j, k;
+		    var totalPages = parseInt(totalPages); //总数变为整型
+		    //当前页,是从1开始计的
+
+		    i = pageIndex;
+		    //上一页的索引
+		    j = pageIndex - 1;
+		    //下一页的索引
+		    k = pageIndex + 1;
+
+		    var oBefore, oAfter, oBeforeLength, oAfterLength;
+		    oBefore = ""; 
+		    oAfter = ""; 
+		    oBeforeLength = 0;
+		    oAfterLength = 0;
+		   
+		    while (j != 0 && j != i - 4) {
+		    	// 最多循环3次
+		        oBefore = "<a class='Page' href='#' data-index='" + (j - 1) + "'>" + j + "</a>&nbsp;" + oBefore;
+		        j--;oBeforeLength++;
+		    }
+		    for (; k < totalPages + 1 && k < i + 3; k++) {
+		    	//最多循环2次
+		        oAfter += "<a class='Page' href='#' data-index='" + (k - 1) + "'>" + k + "</a>&nbsp;";
+		        oAfterLength++;
+		    }
+
+		    oPaging = oBefore + "<a class='CurPage' href='#' rel='' style='color:Red;'>" + i.toString() + "</a>&nbsp;" + oAfter
+		    
+		    if(i == 5){
+		    	oPaging = '<span>1++ </span>'+oPaging;
+		    }
+		    if(i > 5){
+		    	oPaging = '1<span>...</span>'+oPaging;
+		    }
+		    if(i + 3 < totalPages){
+		    	oPaging = oPaging + '<span>...</span>17';
+		    }
+		     if(i + 3 == totalPages){
+		    	oPaging = oPaging + '<span>total</span>';
+		    }
+		    
+		    return oPaging;
+		}
+		var item = document.getElementById("item");
+		item.innerHTML = makePaging(17,12);
+		console.log(item);
+	</script>
+</body>
+</html>

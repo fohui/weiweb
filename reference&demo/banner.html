@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Banner</title>
+	<style>
+		* {margin:0;padding:0;}
+		li {
+			list-style-type: none;
+		}
+		img {
+			width:100%;
+		}
+		ul {
+			padding-left:0;
+		}
+		#img2 {
+			z-index:2;
+		}
+		.photolist li {
+			position:absolute;
+		}
+		.photolist {
+			height:500px;
+		}
+		.indicators a {
+			width: 10px;
+			height: 10px;
+			background-color: orange;
+		}
+	</style>
+</head>
+<body>
+	<ul class="photolist">
+		<li style="z-index:1" class="current abc"><a href="#"><img src="banner1.jpg" alt="1"></a></li>
+		<li style="z-index:0"><a href="#"><img src="banner2.jpg" alt="2"></a></li>
+		<li style="z-index:0"><a href="#"><img src="banner3.jpg" alt="3"></a></li>
+	</ul>
+	<ul class="indicators">
+		<li><a href="#">1</a></li>
+		<li><a href="#">2</a></li>
+		<li class="current"><a href="#">3</a></li>
+	</ul>
+	<script>
+		var photolist = document.getElementsByTagName("ul")[0];
+		var indicators = document.getElementsByTagName("ul")[1];
+
+		function hasClassName(element,names){
+	        var classNameStr,flag;
+	        classNameStr = element.className + " ";
+	        flag = true;
+	        names = names.split(" ");
+	        for (var j = 0, name; name = names[j]; j++) {
+	            //没有包含其中
+	            if(classNameStr.indexOf(name + " ") == -1){
+	                flag = false;
+	                break;
+	            }
+	        };
+	        return flag;
+	    }
+		 //------OK!!
+	     function addClassName(element,names){
+	        if(!element.className) element.className=" ";
+	        var originClass = element.className.split(" ");
+	        //获取新增的class，返回一个数据.如果没有的话怎么办？
+	        var addClass = names.split(" ");
+	        var newClass = originClass;
+	        if(!addClass.length) return;
+	        for (var i =0, l =addClass.length; i < l; i++) {
+	            if(!hasClassName(element,addClass[i])) newClass.push(addClass[i]);
+	        };
+	        element.className = newClass.join(" ").trim();
+	    }
+	    //--------OK!!!
+	    function removeClassName(element,names){
+	    	if(!element.className) return;
+	    	//如果originClass有多余的空格，也会单独被提取出来作为一个数据项，需要改进
+	        var originClass = element.className.trim().split(" ")
+	        originClass.forEach(function(element,index,array){
+	        	if(array[index] == "") array.splice(index,1);
+	        });
+	        var removeClass = names.trim().split(" ");
+	        var newClass = originClass;
+	        if(!originClass.length || !removeClass.length) return;
+	        //
+	        for(var i=0,l=removeClass.length;i<l;i++){
+	        	for(var j=0,len=originClass.length;j<len;j++){
+	            	if(originClass[j] == removeClass[i]) newClass.splice(j,1);
+	        	}
+	        }
+	        element.className = !newClass.length ? " ":newClass.join(" ");
+	    }
+		//--OK！！
+		function fadeIn(ele,callback) {
+			//如果ele是一个元素节点？？
+	        var stepLength = 1/50;
+	        if (!parseFloat(ele.style.opacity)) {
+	            ele.style.opacity = 0;
+	        }
+	        function step () {
+	            if (parseFloat(ele.style.opacity)+stepLength < 1) {
+	                ele.style.opacity = parseFloat(ele.style.opacity)+stepLength;
+	            } else {
+	                ele.style.opacity = 1;
+	                //如果callback 是一个函数，则进行执行;
+	                clearInterval(setIntervalId);
+	            }
+	        }
+	        var setIntervalId = setInterval(step, 20);
+    	};
+
+		var currentIndex = function(){
+			for(var i=0,l=indicators.children.length;i<l;i++){
+				if(hasClassName(indicators.children[i],"current")){
+					return i;
+				}
+			}
+		}
+    	var carouselTime = setInterval(function(){
+    		var current = currentIndex();
+    		next = current==photolist.children.length-1?0:current+1;
+    		if(!photolist.children[next].style) photolist.children[next].style = "";
+    		photolist.children[next].style.opacity = 0;
+
+    		photolist.children[current].style.zIndex = 0;
+			photolist.children[next].style.zIndex = 1;
+			//移出原有的图片的current，给next图片的类加上current
+			removeClassName(indicators.children[current],"current");
+			addClassName(indicators.children[next],"current");
+
+    		fadeIn(photolist.children[next]);
+    	},5000);
+	</script>
+</body>
+</html>
